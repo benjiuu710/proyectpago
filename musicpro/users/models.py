@@ -10,6 +10,7 @@ class Profile(models.Model):
         'CA': ('CAD', 'C$'), 'CO': ('COP', '$'), 'ES': ('EUR', '€'),
         'GB': ('GBP', '£'), 'JP': ('JPY', '¥'), 'MX': ('MXN', '$'),
         'PE': ('PEN', 'S/'), 'US': ('USD', '$'),
+        'CN': ('CNY', '¥'),
     }
     ROL_CHOICES = [
         ('cliente', 'Cliente'),
