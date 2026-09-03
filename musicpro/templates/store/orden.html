@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Orden #{{ orden.pk }}{% endblock %}
+{% block content %}
+<h2 style="margin-bottom:16px;">Orden #{{ orden.pk }}</h2>
+
+<div class="card">
+    <p><strong>Estado:</strong>
+        {% if orden.estado == 'pagada' %}<span class="badge ok">Pagada</span>
+        {% else %}<span class="badge no">{{ orden.get_estado_display }}</span>{% endif %}
+    </p>
+    <p><strong>Total:</strong> ${{ orden.total }} CLP</p>
+    {% if orden.puntos_usados %}<p>Puntos usados: {{ orden.puntos_usados }} (descuento ${{ orden.descuento_puntos }})</p>{% endif %}
+    <p><strong>Fecha:</strong> {{ orden.creada }}</p>
+    {% if orden.transaction %}
+        <p><strong>Folio transacción:</strong> <span class="mono">{{ orden.transaction.folio }}</span></p>
+        <p><strong>Comprobante:</strong> <a style="color:#c4a6ff;" href="{% url 'payments:comprobantes' %}">Ver boucher</a></p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h3>Detalle</h3>
+    <table>
+        <tr><th>Producto</th><th>Cantidad</th><th>Precio</th><th>Subtotal</th></tr>
+        {% for item in orden.order_items.all %}
+        <tr>
+            <td>{{ item.product.nombre }}</td>
+            <td>{{ item.cantidad }}</td>
+            <td>${{ item.precio_unitario }}</td>
+            <td>${{ item.subtotal }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

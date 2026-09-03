@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}{{ proveedor.nombre }}{% endblock %}
+{% block content %}
+<h2 style="margin-bottom:16px;">Comprar a: {{ proveedor.nombre }}</h2>
+
+<div class="card">
+    <h3>Catálogo al por mayor</h3>
+    <form method="post">
+        {% csrf_token %}
+        <table>
+            <tr><th>Producto</th><th>Precio mayorista</th><th>Cantidad</th></tr>
+            {% for item in proveedor.catalog.all %}
+            <tr>
+                <td>{{ item.product.nombre }}</td>
+                <td>${{ item.precio_mayorista }}</td>
+                <td><input type="number" name="cant_{{ item.pk }}" min="0" value="0" style="width:100px;"></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3">Este proveedor no tiene catálogo cargado.</td></tr>
+            {% endfor %}
+        </table>
+        <br>
+        <button type="submit" class="btn green">Solicitar compra (valida fondos automáticamente)</button>
+    </form>
+    <p style="margin-top:12px; color:#c4a6ff;">
+        La compra se descuenta de tu tarjeta BeatPay. Si no hay saldo suficiente, se cancela y recibes
+        notificación de rechazo con comprobante.
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Registro{% endblock %}
+{% block content %}
+<div class="card" style="max-width:420px; margin:0 auto;">
+    <h3>Crear cuenta MusicPro</h3>
+    <form method="post">
+        {% csrf_token %}
+        <label>Nombre de usuario</label>
+        <input type="text" name="username" required>
+        <label>Email</label>
+        <input type="email" name="email">
+        <label>RUT</label>
+        <input type="text" name="rut">
+        <label>Teléfono</label>
+        <input type="tel" name="telefono">
+        <label for="pais">País de residencia</label>
+        <select id="pais" name="pais" required>
+            <option value="CL">Chile - Peso chileno (CLP $)</option>
+            <option value="AR">Argentina - Peso argentino (ARS $)</option>
+            <option value="BR">Brasil - Real (BRL R$)</option>
+            <option value="CA">Canadá - Dólar canadiense (CAD C$)</option>
+            <option value="CO">Colombia - Peso colombiano (COP $)</option>
+            <option value="ES">España - Euro (EUR €)</option>
+            <option value="GB">Reino Unido - Libra (GBP £)</option>
+            <option value="JP">Japón - Yen (JPY ¥)</option>
+            <option value="MX">México - Peso mexicano (MXN $)</option>
+            <option value="PE">Perú - Sol (PEN S/)</option>
+            <option value="US">Estados Unidos - Dólar (USD $)</option>
+        </select>
+        <label>Contraseña</label>
+        <input type="password" name="password" required>
+        <label>Repetir contraseña</label>
+        <input type="password" name="password2" required>
+        <label>BPass de compra (6 dígitos)</label>
+        <input type="password" name="bpass" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required>
+        <label>Repetir BPass</label>
+        <input type="password" name="bpass2" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required>
+        <button type="submit" class="btn">Registrarme</button>
+    </form>
+</div>
+{% endblock %}

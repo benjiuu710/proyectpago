@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Carrito{% endblock %}
+{% block content %}
+<h2 style="margin-bottom:16px;">Tu Carrito</h2>
+
+{% if cart.items.all %}
+<div class="card">
+    <table>
+        <tr><th>Producto</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th></tr>
+        {% for item in cart.items.all %}
+        <tr>
+            <td>{{ item.product.nombre }}</td>
+            <td>${{ item.product.precio }}</td>
+            <td>{{ item.cantidad }}</td>
+            <td>${{ item.subtotal }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p style="font-size:22px; margin:14px 0; color:#8ff0b0;">Total: ${{ cart.total }} CLP</p>
+    <p style="color:#c4a6ff;">Tienes {{ puntos_disponibles }} puntos disponibles (10 CLP por punto).</p>
+    <a class="btn green" href="{% url 'store:checkout' %}">Ir a pagar</a>
+</div>
+{% else %}
+    <p>Tu carrito está vacío. <a style="color:#c4a6ff;" href="{% url 'store:inicio' %}">Ir a la tienda</a></p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Mi Perfil{% endblock %}
+{% block content %}
+<h2 style="margin-bottom:16px;">Mi Perfil</h2>
+
+<div class="card">
+    <h3>{{ user.username }}</h3>
+    <p>Rol: {{ perfil.get_rol_display }}</p>
+    <p>RUT: {{ perfil.rut|default:'—' }}</p>
+    <p>Teléfono: {{ perfil.telefono|default:'—' }}</p>
+    <p>Estado de la cuenta:
+        {% if perfil.estado == 'activa' %}<span class="badge ok">Activa</span>
+        {% else %}<span class="badge no">Bloqueada</span>{% endif %}
+    </p>
+</div>
+
+<div class="card">
+    <h3>Tarjeta BeatPay</h3>
+    {% if wallet %}
+        <p class="mono">{{ wallet.numero_tarjeta }}</p>
+        <p>Saldo: <strong>${{ wallet.saldo }} CLP</strong></p>
+        <p>Estado: {{ wallet.get_estado_display }}</p>
+        <a class="btn" href="{% url 'payments:tarjeta' %}">Administrar tarjeta</a>
+    {% else %}
+        <p>No tienes tarjeta. Se creará automáticamente en tu primera compra.</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h3>Puntos de fidelización</h3>
+    {% if points_wallet %}
+        <p>Tienes <strong>{{ points_wallet.puntos }}</strong> puntos.</p>
+        <a class="btn grey" href="{% url 'loyalty:puntos' %}">Ver historial de puntos</a>
+    {% else %}
+        <p>Aún no acumulas puntos.</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h3>Seguridad</h3>
+    <a class="btn btn-red" href="{% url 'fraud:bloquear_cuenta' %}">Bloquear cuenta & tarjeta (anti-robo)</a>
+</div>
+{% endblock %}

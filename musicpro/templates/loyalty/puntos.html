@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Mis Puntos{% endblock %}
+{% block content %}
+<h2 style="margin-bottom:16px;">Programa de Fidelización</h2>
+
+<div class="card">
+    <h3>Tus puntos</h3>
+    <p style="font-size:28px; color:#ffd166;">{{ wallet.puntos }} pts</p>
+    <p>Canjeados en total: {{ wallet.puntos_canjeados }} pts · Valor: 1 punto = 10 CLP</p>
+    <p style="color:#c4a6ff;">Usa tus puntos como descuento al momento de pagar (checkbox en el checkout).</p>
+</div>
+
+<div class="card">
+    <h3>Historial</h3>
+    <table>
+        <tr><th>Fecha</th><th>Movimiento</th><th>Motivo</th></tr>
+        {% for l in historial %}
+        <tr>
+            <td>{{ l.fecha|date:"d/m/Y" }}</td>
+            <td>{% if l.cantidad > 0 %}+{% endif %}{{ l.cantidad }} pts</td>
+            <td>{{ l.motivo }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">Aún no hay movimientos.</td></tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

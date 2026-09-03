@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Antifraude{% endblock %}
+{% block content %}
+<h2 style="margin-bottom:16px;">Sistema Antifraude y Anti-Robo</h2>
+
+<div class="card">
+    <h3>Reglas de riesgo</h3>
+    <table>
+        <tr><th>Regla</th><th>Umbral de monto</th><th>Activa</th></tr>
+        {% for r in rules %}
+        <tr>
+            <td>{{ r.nombre }}</td>
+            <td>${{ r.umbral_monto }}</td>
+            <td>{% if r.activa %}<span class="badge ok">Activa</span>{% else %}<span class="badge no">Inactiva</span>{% endif %}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">No hay reglas configuradas.</td></tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div class="card">
+    <h3>Registro de alertas</h3>
+    <table>
+        <tr><th>Tipo</th><th>Usuario</th><th>Monto</th><th>Detalle</th><th>Fecha</th><th>Resuelto</th></tr>
+        {% for l in logs %}
+        <tr>
+            <td>{{ l.get_tipo_display }}</td>
+            <td>{{ l.user|default:'—' }}</td>
+            <td>${{ l.monto }}</td>
+            <td>{{ l.detalle }}</td>
+            <td>{{ l.fecha|date:"d/m/Y H:i" }}</td>
+            <td>{% if l.resuelto %}Sí{% else %}No{% endif %}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">Sin alertas registradas.</td></tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div class="card">
+    <h3>Acciones de seguridad</h3>
+    <a class="btn btn-red" href="{% url 'fraud:bloquear_cuenta' %}">Congelar mi cuenta & tarjeta (pérdida/robo)</a>
+</div>
+{% endblock %}

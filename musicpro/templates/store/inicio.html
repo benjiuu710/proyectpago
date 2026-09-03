@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}MusicPro · Inicio{% endblock %}
+{% block content %}
+<section class="store-hero" style="border-left:6px solid #ed1c24; padding:34px 30px; margin-bottom:26px; background:linear-gradient(115deg,#25282e,#111216);">
+    <p style="color:#ff9b9f; letter-spacing:2px; font-size:13px; margin-bottom:10px;">MUSIC PRO / BEATPAY VIRTUAL</p>
+    <h1 style="font-size:clamp(34px,6vw,64px); line-height:1; margin-bottom:14px;">Paga tu música<br>con BeatPay.</h1>
+    <p style="color:#c4c8cf; max-width:560px; line-height:1.6;">Tu tarjeta virtual para comprar instrumentos, cargar saldo y seguir cada movimiento en un solo lugar.</p>
+    <a class="btn" href="{% if user.is_authenticated %}{% url 'payments:tarjeta' %}{% else %}{% url 'users:login' %}{% endif %}" style="margin-top:20px;">{% if user.is_authenticated %}Abrir mi BeatPay{% else %}Ingresar a BeatPay{% endif %}</a>
+</section>
+
+<section class="card carousel" aria-label="Destacados BeatPay">
+    <div class="carousel-slide active" style="background-image:url('https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=1400&q=80');">
+        <div class="carousel-copy"><p style="color:#ff9b9f;">BEATPAY VIRTUAL</p><h2>Tu música, tus pagos, tu control.</h2><p style="color:#c4c8cf; margin-top:8px;">Administra tu saldo y compra con autorización segura.</p></div>
+    </div>
+    <div class="carousel-slide" style="background-image:url('https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=1400&q=80');">
+        <div class="carousel-copy"><p style="color:#ff9b9f;">EQUIPAMIENTO PROFESIONAL</p><h2>Sonido para cada escenario.</h2><p style="color:#c4c8cf; margin-top:8px;">Descubre instrumentos y audio seleccionados.</p></div>
+    </div>
+    <div class="carousel-slide" style="background-image:url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1400&q=80');">
+        <div class="carousel-copy"><p style="color:#ff9b9f;">SEGURIDAD BEATPAY</p><h2>Cada operación bajo control.</h2><p style="color:#c4c8cf; margin-top:8px;">Historial, antifraude y comprobantes en un solo lugar.</p></div>
+    </div>
+</section>
+
+<section class="card about-strip">
+    <div><p style="color:#ff9b9f; letter-spacing:1px; font-size:13px;">QUIÉNES SOMOS</p><h2 style="margin:8px 0 12px;">MusicPro BeatPay</h2><p style="color:#c4c8cf; line-height:1.6;">Una plataforma académica de pagos digitales creada para simplificar las compras musicales, cuidar cada operación y conectar a la comunidad con sus productos favoritos.</p></div>
+    <div style="border-left:3px solid #ed1c24; padding-left:18px;"><p style="color:#a7adb7; font-size:13px;">AUTOR DEL PROYECTO</p><h3 style="margin-top:6px;">Benjamin Quintanilla</h3><p style="color:#a7adb7; margin-top:6px;">Backend Django · BeatPay Virtual</p></div>
+</section>
+
+<div style="display:flex; justify-content:space-between; align-items:end; gap:16px; margin-bottom:16px;">
+    <div><p style="color:#ff9b9f; font-size:13px; letter-spacing:1px;">CATÁLOGO</p><h2>Encuentra tu próximo sonido</h2></div>
+    <span style="color:#a7adb7; font-size:14px;">{{ productos|length }} productos</span>
+</div>
+
+<div class="card">
+    <form method="get" style="display:flex; gap:12px; align-items:flex-end;">
+        <div style="flex:1;"><label for="product-search">Buscar en el catálogo</label><input id="product-search" type="text" name="q" placeholder="Ej: guitarra, micrófono..." value="{{ request.GET.q }}"></div>
+        <button class="btn" type="submit">Buscar</button>
+    </form>
+</div>
+
+<div class="grid2">
+{% for p in productos %}
+    <div class="card">
+        {% if p.imagen %}<img src="{{ p.imagen.url }}" alt="{{ p.nombre }}" style="width:100%; height:180px; object-fit:cover; margin:-22px -22px 18px; width:calc(100% + 44px);">{% endif %}
+        {% if p.categoria %}<p style="color:#ff9b9f; font-size:12px; letter-spacing:1px; margin-bottom:8px;">{{ p.categoria.name|upper }}</p>{% endif %}
+        <h3>{{ p.nombre }}</h3>
+        <p style="color:#a7adb7; font-size:13px;">Código {{ p.codigo }} · {{ p.stock }} disponibles</p>
+        <p style="color:#c4c8cf; line-height:1.5; margin-top:12px;">{{ p.descripcion|default:'Equipo profesional listo para tu próximo proyecto.' }}</p>
+        <p style="font-size:24px; color:#ff9b9f; margin:18px 0;">${{ p.precio }} <small style="font-size:13px; color:#a7adb7;">CLP</small></p>
+        {% if user.is_authenticated %}
+            <a class="btn" href="{% url 'store:agregar' p.pk %}">Agregar al carrito</a>
+        {% else %}
+            <a class="btn grey" href="{% url 'users:login' %}">Inicia sesión para comprar</a>
+        {% endif %}
+    </div>
+{% empty %}
+    <p>No hay productos en el catálogo.</p>
+{% endfor %}
+</div>
+<script>
+    const slides = document.querySelectorAll('.carousel-slide');
+    let activeSlide = 0;
+    setInterval(() => {
+        slides[activeSlide].classList.remove('active');
+        activeSlide = (activeSlide + 1) % slides.length;
+        slides[activeSlide].classList.add('active');
+    }, 5000);
+</script>
+{% endblock %}

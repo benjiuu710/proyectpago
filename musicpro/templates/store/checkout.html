@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Checkout BeatPay{% endblock %}
+{% block content %}
+<h2 style="margin-bottom:16px;">Finalizar Compra — BeatPay</h2>
+
+<div class="card">
+    <h3>Resumen</h3>
+    <table>
+        <tr><th>Producto</th><th>Cantidad</th><th>Subtotal</th></tr>
+        {% for item in cart.items.all %}
+        <tr><td>{{ item.product.nombre }}</td><td>{{ item.cantidad }}</td><td>${{ item.subtotal }}</td></tr>
+        {% endfor %}
+    </table>
+    <p style="font-size:22px; color:#8ff0b0; margin:14px 0;">Total: {{ request.user.profile.simbolo_moneda }}{{ total }} {{ request.user.profile.moneda }}</p>
+</div>
+
+<div class="card">
+    <h3>Tu tarjeta virtual BeatPay</h3>
+    <p class="mono">{{ wallet.numero_tarjeta }}</p>
+    <p>Saldo disponible: <strong>{{ request.user.profile.simbolo_moneda }}{{ wallet.saldo }} {{ request.user.profile.moneda }}</strong></p>
+    <p style="color:#c4a6ff;">Estado: {{ wallet.get_estado_display }}</p>
+</div>
+
+<div class="card">
+    <h3>Medio de pago</h3>
+    <form method="post">
+        {% csrf_token %}
+        <label>
+            <input type="checkbox" name="usar_puntos">
+            Usar mis puntos de fidelización como descuento (10 CLP por punto)
+        </label>
+        <label for="bpass">BPass para autorizar la compra</label>
+        <input id="bpass" type="password" name="bpass" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="off" required>
+        <br><br>
+        <button type="submit" class="btn green">Pagar con BeatPay</button>
+        <a class="btn grey" href="{% url 'payments:recargar' %}">Recargar saldo</a>
+    </form>
+</div>
+{% endblock %}

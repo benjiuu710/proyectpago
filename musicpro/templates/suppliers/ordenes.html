@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Órdenes a Proveedores{% endblock %}
+{% block content %}
+<h2 style="margin-bottom:16px;">Órdenes de Compra a Proveedores</h2>
+
+<div class="card">
+    <table>
+        <tr><th>#</th><th>Proveedor</th><th>Total</th><th>Estado</th><th>Observación</th><th>Fecha</th></tr>
+        {% for o in ordenes %}
+        <tr>
+            <td>{{ o.pk }}</td>
+            <td>{{ o.supplier.nombre }}</td>
+            <td>${{ o.monto_total }}</td>
+            <td>
+                {% if o.estado == 'pagada' %}<span class="badge ok">Pagada</span>
+                {% elif o.estado == 'rechazada' %}<span class="badge no">Rechazada</span>
+                {% else %}{{ o.get_estado_display }}{% endif %}
+            </td>
+            <td>{{ o.observacion }}</td>
+            <td>{{ o.creada|date:"d/m/Y H:i" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">No hay órdenes.</td></tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Ingresar{% endblock %}
+{% block content %}
+<div class="card" style="max-width:420px; margin:0 auto;">
+    <h3>Iniciar sesión</h3>
+    <form method="post">
+        {% csrf_token %}
+        <label>RUT o nombre de usuario</label>
+        <input type="text" name="username" autocomplete="username" required>
+        <label>Contraseña</label>
+        <input type="password" name="password" required>
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+        <button type="submit" class="btn">Ingresar</button>
+    </form>
+    <p style="margin-top:12px;">¿No tienes cuenta? <a style="color:#c4a6ff;" href="{% url 'users:registro' %}">Regístrate</a></p>
+</div>
+{% endblock %}

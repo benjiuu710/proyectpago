@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Comprobantes{% endblock %}
+{% block content %}
+<h2 style="margin-bottom:16px;">Mis Comprobantes / Bouchers</h2>
+
+<div class="card">
+    <table>
+        <tr><th>Folio</th><th>Fecha</th><th>Concepto</th><th>Tipo</th><th>Monto</th><th>Resultado</th></tr>
+        {% for v in vouchers %}
+        <tr>
+            <td class="mono">{{ v.folio }}</td>
+            <td>{{ v.fecha|date:"d/m/Y H:i" }}</td>
+            <td>{{ v.concepto }}</td>
+            <td>{{ v.tipo }}</td>
+            <td>${{ v.monto }}</td>
+            <td>{% if v.resultado == 'aprobada' %}<span class="badge ok">Aprobado</span>
+                {% else %}<span class="badge no">{{ v.get_resultado_display }}</span>{% endif %}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">No tienes comprobantes.</td></tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

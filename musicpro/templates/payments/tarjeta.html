@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Tarjeta BeatPay{% endblock %}
+{% block content %}
+<h2 style="margin-bottom:16px;">Tu Tarjeta Virtual BeatPay</h2>
+
+<div class="card">
+    <h3>Tarjeta</h3>
+    <p class="mono" style="font-size:20px;">{{ wallet.numero_tarjeta }}</p>
+    <p>Saldo disponible: <strong style="color:#8ff0b0; font-size:20px;">{{ request.user.profile.simbolo_moneda }}{{ wallet.saldo }} {{ request.user.profile.moneda }}</strong></p>
+    <p>Estado:
+        {% if wallet.estado == 'activa' %}<span class="badge ok">Activa</span>
+        {% else %}<span class="badge no">Bloqueada</span>{% endif %}
+    </p>
+    <a class="btn grey" href="{% url 'payments:recargar' %}">Recargar saldo</a>
+    {% if wallet.estado == 'activa' %}
+        <a class="btn btn-red" href="{% url 'payments:bloquear' %}">Bloquear tarjeta</a>
+    {% else %}
+        <a class="btn green" href="{% url 'payments:bloquear' %}?accion=habilitar">Habilitar tarjeta</a>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h3>Recargar saldo</h3>
+    <form method="post" action="{% url 'payments:recargar' %}" style="max-width:320px;">
+        {% csrf_token %}
+        <label>Monto (CLP)</label>
+        <input type="number" name="monto" min="1" step="0.01" required>
+        <button type="submit" class="btn green">Recargar</button>
+    </form>
+</div>
+
+<div class="card">
+    <h3>Historial de transacciones</h3>
+    <table>
+        <tr><th>Folio</th><th>Concepto</th><th>Tipo</th><th>Monto</th><th>Resultado</th><th>Fecha</th></tr>
+        {% for t in transacciones %}
+        <tr>
+            <td class="mono">{{ t.folio }}</td>
+            <td>{{ t.concepto }}</td>
+            <td>{{ t.get_tipo_display }}</td>
+            <td>{{ request.user.profile.simbolo_moneda }}{{ t.monto }} {{ request.user.profile.moneda }}</td>
+            <td>{% if t.resultado == 'aprobada' %}<span class="badge ok">Aprobada</span>
+                {% else %}<span class="badge no">{{ t.get_resultado_display }}</span>{% endif %}</td>
+            <td>{{ t.fecha|date:"d/m/Y H:i" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">Sin transacciones aún.</td></tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

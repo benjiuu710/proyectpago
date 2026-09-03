@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Bot 24/7{% endblock %}
+{% block content %}
+<h2 style="margin-bottom:16px;">Asistente MusicPro 24/7</h2>
+
+<div class="card">
+    <div style="max-height:320px; overflow-y:auto; padding:10px; background:#16161f; border-radius:8px;">
+        {% for m in historial %}
+            <p style="margin:6px 0; {% if m.remitente == 'bot' %}color:#8ff0b0;{% else %}color:#c4a6ff; text-align:right;{% endif %}">
+                <strong>{{ m.remitente|title }}:</strong> {{ m.texto }}
+            </p>
+        {% endfor %}
+    </div>
+    <form method="post" style="margin-top:12px; display:flex; gap:10px;">
+        {% csrf_token %}
+        <input type="text" name="mensaje" placeholder="Ej: ¿cuánto saldo tengo? · ¿mi pedido 12? · puntos · bloquear tarjeta">
+        <button type="submit" class="btn">Enviar</button>
+    </form>
+    <p style="margin-top:12px; color:#c4a6ff;">
+        Puedo consultar tu <strong>saldo</strong>, el <strong>estado de un pedido</strong> (ej: "pedido 12"),
+        tus <strong>puntos</strong> y <strong>bloquear tu tarjeta</strong> por emergencia.
+    </p>
+</div>
+{% endblock %}

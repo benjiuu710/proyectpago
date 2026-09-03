@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MusicPro{% endblock %}</title>
+    <style>
+        :root { --ink:#111216; --panel:#1b1d22; --line:#30343b; --muted:#a7adb7; --red:#ed1c24; --red-dark:#b70f17; --cream:#f4f1eb; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:Georgia, 'Times New Roman', serif; }
+        body { background:var(--ink); color:var(--cream); min-height:100vh; }
+        header { background:var(--red); border-bottom:5px solid #850b11; padding:16px clamp(20px,5vw,64px);
+                 display:flex; justify-content:space-between; align-items:center; gap:24px; }
+        header .logo { color:#fff; font-size:25px; font-weight:bold; letter-spacing:1px; text-decoration:none; }
+        header nav { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px 18px; }
+        header nav a { color:#fff; text-decoration:none; font-size:14px; }
+        header nav a:hover { color:#ffd9da; }
+        .platform-menu { position:relative; }
+        .platform-menu summary { list-style:none; cursor:pointer; color:#fff; font-size:14px; font-weight:bold; }
+        .platform-menu summary::-webkit-details-marker { display:none; }
+        .platform-menu summary::after { content:' ▾'; }
+        .platform-links { position:absolute; right:0; top:28px; z-index:5; min-width:190px; padding:10px; background:#202329; border:1px solid #4b515a; box-shadow:0 12px 28px #0008; }
+        .platform-links a { display:block; padding:9px 10px; }
+        .carousel { position:relative; overflow:hidden; min-height:245px; background:#15171b; }
+        .carousel-slide { display:none; min-height:245px; padding:32px; background-size:cover; background-position:center; }
+        .carousel-slide.active { display:flex; align-items:end; }
+        .carousel-copy { max-width:480px; padding:18px; background:#101216dd; border-left:4px solid var(--red); }
+        .about-strip { display:grid; grid-template-columns:1.4fr 1fr; gap:24px; align-items:center; }
+        .container { max-width:1180px; margin:34px auto; padding:0 24px; }
+        .card { background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:22px; margin-bottom:18px; }
+        .card h3 { color:#fff; margin-bottom:8px; font-size:21px; }
+        .btn { display:inline-block; background:var(--red); color:#fff; padding:11px 18px; border:0;
+               border-radius:3px; cursor:pointer; text-decoration:none; font-size:15px; font-weight:bold; }
+        .btn:hover { background:#ff3c43; }
+        .btn.grey { background:#454a52; }
+        .btn.green { background:#16804b; }
+        .btn-red { background:var(--red-dark); }
+        .alert { padding:12px 18px; border-radius:3px; margin-bottom:16px; }
+        .alert.success { background:#123d29; color:#9de8bb; }
+        .alert.error { background:#55191d; color:#ffb9bc; }
+        .alert.info { background:#203649; color:#b9dcf4; }
+        table { width:100%; border-collapse:collapse; }
+        .card table { display:block; overflow-x:auto; white-space:nowrap; }
+        th,td { text-align:left; padding:10px; border-bottom:1px solid var(--line); }
+        th { color:#ff9b9f; }
+        form label { display:block; margin-bottom:6px; font-size:14px; color:#ff9b9f; }
+        input[type=text], input[type=email], input[type=password], input[type=number], input[type=tel], select {
+            width:100%; padding:11px; margin-bottom:14px; border-radius:3px; border:1px solid #555b64; background:#25282e; color:#fff; }
+        input:focus, select:focus { outline:2px solid var(--red); border-color:var(--red); }
+        .grid2 { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:18px; }
+        .mono { font-family:monospace; }
+        .badge { padding:4px 10px; border-radius:20px; font-size:13px; }
+        .badge.ok { background:#144d2b; color:#8ff0b0; }
+        .badge.no { background:#5c1a1a; color:#ffb0b0; }
+        footer { border-top:1px solid var(--line); text-align:center; color:var(--muted); padding:30px; font-size:14px; }
+        @media (max-width:700px){
+            header { align-items:flex-start; flex-direction:column; padding:14px 18px; gap:14px; }
+            header .logo { font-size:22px; }
+            header nav { width:100%; justify-content:flex-start; gap:10px 14px; }
+            header nav a { font-size:13px; }
+            .container { margin-top:24px; padding:0 14px; }
+            .grid2{ grid-template-columns:1fr; }
+            .card { padding:17px; }
+            .card table { margin:0 -17px; width:calc(100% + 34px); }
+            .card form[style*="display:flex"] { display:block !important; }
+            .card form[style*="display:flex"] .btn { width:100%; }
+            h1 { overflow-wrap:break-word; }
+            .platform-links { left:0; right:auto; }
+            .carousel-slide { padding:18px; }
+            .about-strip { grid-template-columns:1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{% url 'store:inicio' %}" class="logo">🎵 MusicPro</a>
+        <nav>
+            {% if user.is_authenticated %}
+                <details class="platform-menu">
+                    <summary>Mi plataforma</summary>
+                    <div class="platform-links">
+                        <a href="{% url 'store:inicio' %}">Tienda</a>
+                        <a href="{% url 'store:carrito' %}">Carrito</a>
+                        <a href="{% url 'payments:tarjeta' %}">BeatPay</a>
+                        <a href="{% url 'suppliers:proveedores' %}">Proveedores</a>
+                        <a href="{% url 'notifications:bot' %}">Bot 24/7</a>
+                        <a href="{% url 'fraud:monitoreo' %}">Antifraude</a>
+                        {% if user.is_staff %}<a href="{% url 'admin:index' %}">Panel administrador</a>{% endif %}
+                    </div>
+                </details>
+                <a href="{% url 'users:perfil' %}">{{ user.username }}</a>
+                <a href="{% url 'users:logout' %}">Salir</a>
+            {% else %}
+                <span style="color:#ffd9da; font-size:13px;">Plataforma de pagos musicales</span>
+            {% endif %}
+        </nav>
+    </header>
+
+    <div class="container">
+        {% if messages %}
+            {% for m in messages %}
+                <div class="alert {{ m.tags }}">{{ m }}</div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>MusicPro © 2026 · Sistema de pago BeatPay · Antifraude & Bot 24/7</footer>
+</body>
+</html>

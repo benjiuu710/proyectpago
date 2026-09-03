@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Bandeja de Notificaciones{% endblock %}
+{% block content %}
+<h2 style="margin-bottom:16px;">Bandeja de Notificaciones</h2>
+
+<div class="card">
+    {% for n in notificaciones %}
+        <div style="border-bottom:1px solid #333; padding:12px 0;">
+            <p><strong>{{ n.get_tipo_display }}</strong> <span style="color:#777;">· {{ n.fecha|date:"d/m/Y H:i" }}</span></p>
+            <p>{{ n.mensaje }}</p>
+            {% if n.voucher %}
+                <p><a style="color:#c4a6ff;" href="{% url 'payments:comprobantes' %}">Ver comprobante folio {{ n.voucher.folio }}</a></p>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No tienes notificaciones.</p>
+    {% endfor %}
+</div>
+{% endblock %}

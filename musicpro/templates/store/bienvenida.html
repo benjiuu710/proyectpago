@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}MusicPro BeatPay{% endblock %}
+{% block content %}
+<section class="card" style="max-width:980px; margin:20px auto; padding:clamp(28px,6vw,72px); background:linear-gradient(120deg,#25282e,#111216); border-left:6px solid #ed1c24;">
+    <p style="color:#ff9b9f; letter-spacing:2px; font-size:13px; margin-bottom:14px;">MUSIC PRO / BEATPAY VIRTUAL</p>
+    <h1 style="font-size:clamp(38px,7vw,76px); line-height:1; margin-bottom:18px;">Tu música.<br>Tu dinero.<br><span style="color:#ed1c24;">Tu control.</span></h1>
+    <p style="color:#c4c8cf; max-width:580px; line-height:1.7; font-size:17px;">Una plataforma de pagos digitales para comprar equipamiento musical, administrar tu saldo y proteger cada operación.</p>
+    <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:28px;">
+        <a class="btn" href="{% url 'users:login' %}">Iniciar sesión</a>
+        <a class="btn grey" href="{% url 'users:registro' %}">Crear cuenta</a>
+    </div>
+</section>
+
+<section class="card about-strip">
+    <div>
+        <p style="color:#ff9b9f; letter-spacing:1px; font-size:13px;">QUIÉNES SOMOS</p>
+        <h2 style="margin:8px 0 12px;">Pagos hechos para la comunidad musical</h2>
+        <p style="color:#c4c8cf; line-height:1.6;">MusicPro BeatPay es un proyecto académico de plataforma de pagos. Centraliza tarjeta virtual, saldo, compras, comprobantes y seguridad en una experiencia pensada para PC y teléfono.</p>
+    </div>
+    <div style="border-left:3px solid #ed1c24; padding-left:18px;">
+        <p style="color:#a7adb7; font-size:13px;">AUTOR DEL PROYECTO</p>
+        <h3 style="margin-top:6px;">Benjamin Quintanilla</h3>
+        <p style="color:#a7adb7; margin-top:6px;">Ingeniero en Ciberseguridad</p>
+    </div>
+</section>
+{% endblock %}

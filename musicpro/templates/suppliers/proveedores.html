@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Proveedores{% endblock %}
+{% block content %}
+<h2 style="margin-bottom:16px;">Gestión de Proveedores</h2>
+
+<div class="card">
+    <a class="btn grey" href="{% url 'suppliers:ordenes' %}">Ver órdenes de compra</a>
+</div>
+
+<div class="grid2">
+{% for p in proveedores %}
+    <a href="{% url 'suppliers:detalle' p.pk %}" style="text-decoration:none;">
+        <div class="card">
+            <h3>{{ p.nombre }}</h3>
+            <p>Tiempo de entrega: {{ p.tiempo_entrega_dias }} días</p>
+            <p>Contacto: {{ p.contacto }} · {{ p.email }}</p>
+            <p style="color:#c4a6ff;">Ver catálogo y comprar →</p>
+        </div>
+    </a>
+{% empty %}
+    <p>No hay proveedores registrados.</p>
+{% endfor %}
+</div>
+{% endblock %}
