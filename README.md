@@ -42,7 +42,7 @@ python ../setup_demo.py
 python manage.py runserver
 ```
 
-Abre http://127.0.0.1:8000/
+Abre tu http
 
 ## Usuarios de demostración
 
