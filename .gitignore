@@ -6,6 +6,8 @@ __pycache__/
 .env
 .env.*
 !.env.example
+.github_ed25519
+.github_ed25519.pub
 *.log
 staticfiles/
 media/
