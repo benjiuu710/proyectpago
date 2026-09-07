@@ -13,8 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY') or get_random_secret_key()
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() == 'true'
+# Desarrollo local: permitir que Django entregue CSS, JavaScript e imágenes.
+# En cualquier despliegue, define DJANGO_DEBUG=False explícitamente.
+DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() == 'true'
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
