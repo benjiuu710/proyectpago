@@ -2,6 +2,8 @@
 
 Este diagrama refleja los modelos propios de las aplicaciones. `USER` es el modelo de usuarios que aporta Django; las tablas de permisos, sesiones y administración se generan automáticamente y no son modelos de negocio de MusicPro.
 
+![Diagrama del modelo de datos de MusicPro](modelo-datos.svg)
+
 ```mermaid
 erDiagram
     USER ||--o| PROFILE : tiene
