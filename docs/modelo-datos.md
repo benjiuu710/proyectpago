@@ -5,6 +5,7 @@ Este diagrama refleja los modelos propios de las aplicaciones. `USER` es el mode
 ![Diagrama del modelo de datos de MusicPro](modelo-datos.svg)
 
 ```mermaid
+%%{init: {"theme": "dark"}}%%
 erDiagram
     USER ||--o| PROFILE : tiene
     USER ||--o| CART : posee
