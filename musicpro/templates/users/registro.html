@@ -7,8 +7,8 @@
         {% csrf_token %}
         <label>Nombre de usuario</label>
         <input type="text" name="username" required>
-        <label>Email</label>
-        <input type="email" name="email">
+        <label for="email">Email</label>
+        <input id="email" type="email" name="email" autocomplete="email" required>
         <label>RUT</label>
         <input type="text" name="rut">
         <label>Teléfono</label>

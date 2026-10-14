@@ -4,6 +4,8 @@ from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 from payments.models import BeatPayWallet
 from loyalty.models import PointsWallet
 from .models import Profile
@@ -12,7 +14,7 @@ from .models import Profile
 def registro(request):
     if request.method == 'POST':
         username = request.POST.get('username')
-        email = request.POST.get('email')
+        email = request.POST.get('email', '').strip().lower()
         rut = request.POST.get('rut')
         telefono = request.POST.get('telefono')
         pais = request.POST.get('pais', 'CL')
@@ -23,6 +25,12 @@ def registro(request):
 
         if password != password2:
             messages.error(request, 'Las contraseñas no coinciden.')
+            return render(request, 'users/registro.html')
+
+        try:
+            validate_email(email)
+        except ValidationError:
+            messages.error(request, 'Ingresa un correo electrónico válido.')
             return render(request, 'users/registro.html')
 
         if not (bpass.isdigit() and len(bpass) == 6) or bpass != bpass2:

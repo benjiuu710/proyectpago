@@ -1,4 +1,4 @@
-# 🎵 MusicPro — Sistema de Pago BeatPay
+# MusicPro — Sistema de Pago BeatPay
 
 Backend Django de la plataforma MusicPro con sistema de pago (tarjeta virtual BeatPay),
 antifraude, bot 24/7, fidelización por puntos, gestión de proveedores y comprobantes/bouchers.
@@ -21,35 +21,20 @@ proyect/
 ## Instalación
 
 ```powershell
-# 1. Crea tu entorno virtual (tú lo harás) y actívalo
+# Ejecuta estos comandos desde la carpeta proyect
 python -m venv venv
 .\venv\Scripts\Activate.ps1
-
-# 2. Instala dependencias
 pip install -r requirements.txt
-
-# 3. Entra a la carpeta del proyecto
-cd musicpro
-
-# 4. Crea las migraciones y la base de datos
-python manage.py makemigrations users store payments loyalty suppliers fraud notifications
 python manage.py migrate
-
-# 5. Carga datos de demostración (superusuario, productos, proveedor, cliente)
-python ../setup_demo.py
-
-# 6. Corre el servidor
+python manage.py createsuperuser
+python setup_demo.py
+$env:DJANGO_DEBUG = 'true'
 python manage.py runserver
 ```
 
 Abre tu http
 
-## Usuarios de demostración
-
-| Usuario | Contraseña | Rol |
-|---------|-----------|-----|
-| admin   | admin123   | Superusuario (panel /admin) |
-| cliente | cliente123 | Cliente con saldo $500.000 y 100 pts |
+El panel está en http://127.0.0.1:8000/admin/. Usa el superusuario que creaste; el proyecto no define contraseñas de demostración fijas.
 
 ## Funcionalidades
 

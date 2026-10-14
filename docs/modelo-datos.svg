@@ -1,0 +1,204 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1990" viewBox="0 0 1800 1990" role="img" aria-labelledby="title description">
+  <title id="title">Modelo de datos de MusicPro</title>
+  <desc id="description">Entidades principales y claves foraneas del proyecto Django MusicPro.</desc>
+  <style>
+    text { font-family: Segoe UI, Arial, sans-serif; fill: #182a35; }
+    .title { font-size: 34px; font-weight: 700; }
+    .subtitle { font-size: 17px; fill: #52636d; }
+    .entity { fill: #ffffff; stroke: #bac8ce; stroke-width: 2; }
+    .header { fill: #15566a; }
+    .header-alt { fill: #286c5d; }
+    .header-extra { fill: #75552e; }
+    .name { fill: #ffffff; font-size: 18px; font-weight: 700; }
+    .field { font-size: 15px; }
+    .legend { font-size: 15px; fill: #344955; }
+    .note { font-size: 16px; fill: #52636d; }
+  </style>
+  <rect width="1800" height="1990" fill="#f4f7f8" />
+  <text class="title" x="50" y="58">MusicPro | Modelo de datos</text>
+  <text class="subtitle" x="50" y="88">Entidades implementadas en Django. PK = clave primaria, FK = clave foranea, UK = valor unico.</text>
+  <text class="legend" x="50" y="116">Las referencias FK indican las relaciones; los campos completos y cardinalidades estan en modelo-datos.md.</text>
+
+  <g transform="translate(40 140)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">AUTH_USER (Django)</text>
+    <text class="field" x="16" y="68">PK id</text>
+    <text class="field" x="16" y="96">username, email</text>
+    <text class="field" x="16" y="124">is_staff, is_superuser, is_active</text>
+    <text class="field" x="16" y="152">Django aporta autenticacion y permisos</text>
+  </g>
+  <g transform="translate(630 140)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">PROFILE</text>
+    <text class="field" x="16" y="68">PK id; FK/UK user_id -&gt; AUTH_USER</text>
+    <text class="field" x="16" y="96">UK rut; telefono</text>
+    <text class="field" x="16" y="124">pais, moneda, bpass_hash</text>
+    <text class="field" x="16" y="152">rol, estado</text>
+  </g>
+  <g transform="translate(1220 140)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header-alt" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">CART</text>
+    <text class="field" x="16" y="68">PK id; FK/UK user_id -&gt; AUTH_USER</text>
+    <text class="field" x="16" y="96">creado, actualizado</text>
+    <text class="field" x="16" y="124">Un usuario tiene como maximo un carrito</text>
+  </g>
+
+  <g transform="translate(40 395)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header-alt" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">CATEGORY</text>
+    <text class="field" x="16" y="68">PK id</text>
+    <text class="field" x="16" y="96">name</text>
+    <text class="field" x="16" y="124">Una categoria clasifica varios productos</text>
+  </g>
+  <g transform="translate(630 395)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header-alt" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">PRODUCT</text>
+    <text class="field" x="16" y="68">PK id; UK codigo</text>
+    <text class="field" x="16" y="96">FK categoria_id -&gt; CATEGORY (opcional)</text>
+    <text class="field" x="16" y="124">nombre, precio, descripcion, imagen</text>
+    <text class="field" x="16" y="152">stock, ubicacion</text>
+  </g>
+  <g transform="translate(1220 395)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header-alt" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">CART_ITEM</text>
+    <text class="field" x="16" y="68">PK id</text>
+    <text class="field" x="16" y="96">FK cart_id -&gt; CART</text>
+    <text class="field" x="16" y="124">FK product_id -&gt; PRODUCT</text>
+    <text class="field" x="16" y="152">cantidad</text>
+  </g>
+
+  <g transform="translate(40 650)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header-alt" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">ORDER</text>
+    <text class="field" x="16" y="68">PK id; FK user_id -&gt; AUTH_USER</text>
+    <text class="field" x="16" y="96">FK/UK transaction_id -&gt; TRANSACTION (opcional)</text>
+    <text class="field" x="16" y="124">total, estado, creada</text>
+    <text class="field" x="16" y="152">puntos_usados, descuento_puntos</text>
+  </g>
+  <g transform="translate(630 650)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header-alt" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">ORDER_ITEM</text>
+    <text class="field" x="16" y="68">PK id</text>
+    <text class="field" x="16" y="96">FK order_id -&gt; ORDER</text>
+    <text class="field" x="16" y="124">FK product_id -&gt; PRODUCT</text>
+    <text class="field" x="16" y="152">cantidad, precio_unitario</text>
+  </g>
+  <g transform="translate(1220 650)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header-alt" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">BEATPAY_WALLET</text>
+    <text class="field" x="16" y="68">PK id; FK/UK user_id -&gt; AUTH_USER</text>
+    <text class="field" x="16" y="96">UK numero_tarjeta, UK token</text>
+    <text class="field" x="16" y="124">saldo, estado, creada</text>
+  </g>
+
+  <g transform="translate(40 905)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">TRANSACTION</text>
+    <text class="field" x="16" y="68">PK id; FK wallet_id -&gt; BEATPAY_WALLET (opcional)</text>
+    <text class="field" x="16" y="96">monto, fecha, concepto</text>
+    <text class="field" x="16" y="124">tipo, resultado, referencia</text>
+    <text class="field" x="16" y="152">UK folio</text>
+  </g>
+  <g transform="translate(630 905)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">VOUCHER</text>
+    <text class="field" x="16" y="68">PK id; FK/UK transaction_id -&gt; TRANSACTION</text>
+    <text class="field" x="16" y="96">FK usuario_id -&gt; AUTH_USER (opcional)</text>
+    <text class="field" x="16" y="124">folio, fecha, monto, concepto</text>
+    <text class="field" x="16" y="152">resultado, tipo, pdf</text>
+  </g>
+  <g transform="translate(1220 905)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">POINTS_WALLET</text>
+    <text class="field" x="16" y="68">PK id; FK/UK user_id -&gt; AUTH_USER</text>
+    <text class="field" x="16" y="96">puntos, puntos_canjeados</text>
+    <text class="field" x="16" y="124">actualizado</text>
+  </g>
+
+  <g transform="translate(40 1160)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">POINTS_LEDGER</text>
+    <text class="field" x="16" y="68">PK id</text>
+    <text class="field" x="16" y="96">FK wallet_id -&gt; POINTS_WALLET</text>
+    <text class="field" x="16" y="124">cantidad, motivo, fecha</text>
+  </g>
+  <g transform="translate(630 1160)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header-extra" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">SUPPLIER</text>
+    <text class="field" x="16" y="68">PK id; nombre, contacto, telefono</text>
+    <text class="field" x="16" y="96">email, direccion</text>
+    <text class="field" x="16" y="124">tiempo_entrega_dias, activo</text>
+  </g>
+  <g transform="translate(1220 1160)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header-extra" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">SUPPLIER_PRODUCT</text>
+    <text class="field" x="16" y="68">PK id; FK supplier_id -&gt; SUPPLIER</text>
+    <text class="field" x="16" y="96">FK product_id -&gt; PRODUCT</text>
+    <text class="field" x="16" y="124">precio_mayorista; par proveedor/producto unico</text>
+  </g>
+
+  <g transform="translate(40 1415)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header-extra" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">SUPPLIER_ORDER</text>
+    <text class="field" x="16" y="68">PK id; FK supplier_id -&gt; SUPPLIER</text>
+    <text class="field" x="16" y="96">monto_total, estado, observacion</text>
+    <text class="field" x="16" y="124">creada</text>
+  </g>
+  <g transform="translate(630 1415)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header-extra" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">SUPPLIER_ORDER_ITEM</text>
+    <text class="field" x="16" y="68">PK id; FK order_id -&gt; SUPPLIER_ORDER</text>
+    <text class="field" x="16" y="96">FK product_id -&gt; PRODUCT</text>
+    <text class="field" x="16" y="124">cantidad, precio_unitario</text>
+  </g>
+  <g transform="translate(1220 1415)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header-extra" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">FRAUD_RULE</text>
+    <text class="field" x="16" y="68">PK id</text>
+    <text class="field" x="16" y="96">nombre, umbral_monto, activa</text>
+  </g>
+
+  <g transform="translate(40 1670)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header-extra" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">FRAUD_LOG</text>
+    <text class="field" x="16" y="68">PK id; FK user_id -&gt; AUTH_USER (opcional)</text>
+    <text class="field" x="16" y="96">tipo, detalle, monto, fecha</text>
+    <text class="field" x="16" y="124">resuelto</text>
+  </g>
+  <g transform="translate(630 1670)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">NOTIFICATION</text>
+    <text class="field" x="16" y="68">PK id; FK user_id -&gt; AUTH_USER</text>
+    <text class="field" x="16" y="96">FK voucher_id -&gt; VOUCHER (opcional)</text>
+    <text class="field" x="16" y="124">tipo, mensaje, leida, fecha</text>
+  </g>
+  <g transform="translate(1220 1670)">
+    <rect class="entity" width="540" height="220" rx="8" />
+    <rect class="header" width="540" height="38" rx="8" />
+    <text class="name" x="16" y="26">CHAT_MESSAGE</text>
+    <text class="field" x="16" y="68">PK id; FK user_id -&gt; AUTH_USER</text>
+    <text class="field" x="16" y="96">remitente, texto, fecha</text>
+  </g>
+
+  <text class="note" x="40" y="1940">Las tablas auth_*, django_admin_log, django_content_type, django_session y django_migrations son administradas por Django.</text>
+</svg>
