@@ -40,6 +40,6 @@
 
 <div class="card">
     <h3>Acciones de seguridad</h3>
-    <a class="btn btn-red" href="{% url 'fraud:bloquear_cuenta' %}">Congelar mi cuenta & tarjeta (pérdida/robo)</a>
+    <form method="post" action="{% url 'fraud:bloquear_cuenta' %}">{% csrf_token %}<button class="btn btn-red" type="submit">Congelar mi cuenta & tarjeta (pérdida/robo)</button></form>
 </div>
 {% endblock %}

@@ -38,6 +38,6 @@
 
 <div class="card">
     <h3>Seguridad</h3>
-    <a class="btn btn-red" href="{% url 'fraud:bloquear_cuenta' %}">Bloquear cuenta & tarjeta (anti-robo)</a>
+    <form method="post" action="{% url 'fraud:bloquear_cuenta' %}">{% csrf_token %}<button class="btn btn-red" type="submit">Bloquear cuenta & tarjeta (anti-robo)</button></form>
 </div>
 {% endblock %}

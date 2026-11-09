@@ -1,0 +1,14 @@
+{% extends 'backoffice/base.html' %}
+{% block title %}Categorías · Gestión{% endblock %}
+{% block admin_content %}
+<section class="card">
+    <div class="admin-heading"><h2>Categorías</h2><a class="btn" href="{% url 'backoffice:category_create' %}">Nueva categoría</a></div>
+    <table>
+        <thead><tr><th>Nombre</th><th>Productos</th><th>Acciones</th></tr></thead>
+        <tbody>
+        {% for category in categories %}<tr><td>{{ category.name }}</td><td>{{ category.products.count }}</td><td class="admin-actions"><a href="{% url 'backoffice:category_edit' category.pk %}">Editar</a><a href="{% url 'backoffice:category_delete' category.pk %}">Eliminar</a></td></tr>
+        {% empty %}<tr><td colspan="3">No hay categorías registradas.</td></tr>{% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

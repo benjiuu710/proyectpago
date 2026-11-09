@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from django.db import transaction
+from django.views.decorators.http import require_POST
 from .models import Product, Cart, CartItem, Order, OrderItem
 from loyalty.models import PointsWallet, PointsLedger
 from payments.services import procesar_pago, obtener_wallet
@@ -11,7 +12,7 @@ from payments.services import procesar_pago, obtener_wallet
 def inicio(request):
     if not request.user.is_authenticated:
         return render(request, 'store/bienvenida.html')
-    productos = Product.objects.all()
+    productos = Product.objects.filter(estado='activo')
     categoria = request.GET.get('categoria')
     busqueda = request.GET.get('q')
     if categoria:
@@ -32,8 +33,12 @@ def _contar_carrito(request):
 
 
 @login_required
+@require_POST
 def agregar_al_carrito(request, pk):
     product = get_object_or_404(Product, pk=pk)
+    if product.estado != 'activo':
+        messages.error(request, 'Este producto ya no está disponible.')
+        return redirect('store:inicio')
     cart, _ = Cart.objects.get_or_create(user=request.user)
     item = CartItem.objects.filter(cart=cart, product=product).first()
     cantidad_actual = item.cantidad if item else 0
@@ -78,6 +83,9 @@ def checkout(request):
             return redirect('store:checkout')
         usar_puntos = request.POST.get('usar_puntos') == 'on'
         for item in cart.items.select_related('product'):
+            if item.product.estado != 'activo':
+                messages.error(request, f'{item.product.nombre} ya no está disponible.')
+                return redirect('store:carrito')
             if item.cantidad > item.product.stock:
                 messages.error(request, f'Stock insuficiente para {item.product.nombre}.')
                 return redirect('store:carrito')

@@ -1,0 +1,22 @@
+{% extends 'backoffice/base.html' %}
+{% block title %}{% if product %}Editar{% else %}Nuevo{% endif %} producto · Gestión{% endblock %}
+{% block admin_content %}
+<section class="card">
+    <h2>{% if product %}Editar producto{% else %}Crear producto{% endif %}</h2>
+    {% if errors %}<ul class="error-list">{% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+    <form method="post" enctype="multipart/form-data" class="admin-form">
+        {% csrf_token %}
+        <label>Nombre<input type="text" name="nombre" value="{{ form_data.nombre }}" required></label>
+        <label>Código<input type="text" name="codigo" value="{{ form_data.codigo }}" required></label>
+        <label>Categoría<select name="categoria"><option value="">Sin categoría</option>{% for category in categories %}<option value="{{ category.pk }}" {% if form_data.categoria|stringformat:'s' == category.pk|stringformat:'s' %}selected{% endif %}>{{ category.name }}</option>{% endfor %}</select></label>
+        <label>Precio (CLP)<input type="number" name="precio" min="0" step="0.01" value="{{ form_data.precio }}" required></label>
+        <label>Stock<input type="number" name="stock" min="0" step="1" value="{{ form_data.stock }}" required></label>
+        <label>Estado<select name="estado" required>{% for value,label in estado_choices %}<option value="{{ value }}" {% if form_data.estado == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+        <label>Ubicación<input type="text" name="ubicacion" value="{{ form_data.ubicacion }}"></label>
+        <label>Descripción<textarea name="descripcion">{{ form_data.descripcion }}</textarea></label>
+        <label>Imagen<input type="file" name="imagen" accept="image/*"></label>
+        {% if product.imagen %}<p class="quiet">Imagen actual: {{ product.imagen.name }}</p>{% endif %}
+        <div class="admin-actions"><button class="btn" type="submit">Guardar</button><a href="{% url 'backoffice:products' %}">Cancelar</a></div>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'backoffice/base.html' %}
+{% block title %}{{ heading }} · Gestión{% endblock %}
+{% block admin_content %}
+<section class="card">
+    <h2>{{ heading }}</h2>
+    <p>¿Confirmas eliminar <strong>{{ object }}</strong>?</p>
+    <form method="post" class="admin-actions">
+        {% csrf_token %}
+        <button class="btn btn-red" type="submit">Confirmar eliminación</button>
+        <a href="{% url cancel_url %}">Cancelar</a>
+    </form>
+</section>
+{% endblock %}

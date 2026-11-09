@@ -1,0 +1,18 @@
+{% extends 'backoffice/base.html' %}
+{% block title %}Ventas · Gestión{% endblock %}
+{% block admin_content %}
+<section class="card">
+    <div class="admin-heading"><h2>Ventas</h2><a class="btn" href="{% url 'backoffice:order_create' %}">Registrar venta pendiente</a></div>
+    <form method="get" class="admin-filter">
+        <label>Estado<select name="estado"><option value="">Todos</option>{% for value,label in statuses %}<option value="{{ value }}" {% if selected_status == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+        <button class="btn" type="submit">Filtrar</button>
+    </form>
+    <table>
+        <thead><tr><th>N.º</th><th>Cliente</th><th>Fecha</th><th>Total</th><th>Estado</th><th>Actualizar / gestionar</th></tr></thead>
+        <tbody>
+        {% for order in orders %}<tr><td>{{ order.pk }}</td><td>{{ order.user.username }}</td><td>{{ order.creada|date:'d/m/Y H:i' }}</td><td>${{ order.total|floatformat:0 }}</td><td>{{ order.get_estado_display }}</td><td><div class="admin-actions"><form method="post" action="{% url 'backoffice:order_status' order.pk %}" class="admin-actions">{% csrf_token %}<select name="estado" aria-label="Estado de venta {{ order.pk }}">{% for value,label in statuses %}<option value="{{ value }}" {% if order.estado == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select><button class="btn grey" type="submit">Guardar estado</button></form>{% if order.estado == 'pendiente' and not order.transaction_id %}<a href="{% url 'backoffice:order_edit' order.pk %}">Editar</a>{% if user.profile.rol == 'admin' or user.is_superuser %}<a href="{% url 'backoffice:order_delete' order.pk %}">Eliminar</a>{% endif %}{% endif %}</div></td></tr>
+        {% empty %}<tr><td colspan="6">No hay ventas para mostrar.</td></tr>{% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

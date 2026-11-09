@@ -68,6 +68,7 @@ erDiagram
         string descripcion
         string imagen
         int stock
+        string estado
         string ubicacion
     }
     CART {
@@ -210,5 +211,7 @@ erDiagram
 ```
 
 `FK` indica clave foránea, `UK` una columna única y `PK` la clave primaria. Los productos pueden quedar sin categoría; una transacción puede existir sin billetera y una orden sin transacción. `SUPPLIER_PRODUCT` relaciona proveedores y productos, y su par proveedor/producto es único.
+
+El campo `PRODUCT.estado` permite mantener productos activos o inactivos. Solo los activos aparecen en el catálogo, la API y las nuevas compras; los inactivos permanecen disponibles para la administración y el historial.
 
 Para explicar el modelo en la evaluación, puedes partir por `CATEGORY` y `PRODUCT`: una categoría clasifica varios productos y el producto guarda código único, precio y stock. Luego muestra `ORDER` y `ORDER_ITEM`: esta tabla intermedia permite que una orden incluya varios productos y almacena la cantidad y el precio al momento de la compra.

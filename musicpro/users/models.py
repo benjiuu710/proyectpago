@@ -15,6 +15,7 @@ class Profile(models.Model):
     ROL_CHOICES = [
         ('cliente', 'Cliente'),
         ('admin', 'Administrador'),
+        ('operador', 'Operador'),
         ('encargado', 'Encargado de Proveedores'),
     ]
     ESTADO_CHOICES = [

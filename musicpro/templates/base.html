@@ -13,8 +13,11 @@
                  display:flex; justify-content:space-between; align-items:center; gap:24px; }
         header .logo { color:#fff; font-size:25px; font-weight:bold; letter-spacing:1px; text-decoration:none; }
         header nav { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px 18px; }
+        header nav form { display:inline; }
         header nav a { color:#fff; text-decoration:none; font-size:14px; }
         header nav a:hover { color:#ffd9da; }
+        .nav-logout { color:#fff; background:transparent; border:0; cursor:pointer; font:inherit; }
+        .nav-logout:hover { color:#ffd9da; }
         .platform-menu { position:relative; }
         .platform-menu summary { list-style:none; cursor:pointer; color:#fff; font-size:14px; font-weight:bold; }
         .platform-menu summary::-webkit-details-marker { display:none; }
@@ -85,11 +88,11 @@
                         <a href="{% url 'suppliers:proveedores' %}">Proveedores</a>
                         <a href="{% url 'notifications:bot' %}">Bot 24/7</a>
                         <a href="{% url 'fraud:monitoreo' %}">Antifraude</a>
-                        {% if user.is_staff %}<a href="{% url 'admin:index' %}">Panel administrador</a>{% endif %}
+                        {% if user.is_staff %}{% if user.is_superuser or user.profile.rol == 'admin' or user.profile.rol == 'operador' %}<a href="{% url 'backoffice:dashboard' %}">Administración</a>{% endif %}{% endif %}
                     </div>
                 </details>
                 <a href="{% url 'users:perfil' %}">{{ user.username }}</a>
-                <a href="{% url 'users:logout' %}">Salir</a>
+                <form method="post" action="{% url 'users:logout' %}">{% csrf_token %}<button class="nav-logout" type="submit">Salir</button></form>
             {% else %}
                 <span style="color:#ffd9da; font-size:13px;">Plataforma de pagos musicales</span>
             {% endif %}

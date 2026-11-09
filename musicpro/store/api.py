@@ -6,7 +6,7 @@ from .serializers import OrderSerializer, ProductSerializer
 
 
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all().order_by('nombre')
+    queryset = Product.objects.filter(estado='activo').order_by('nombre')
     serializer_class = ProductSerializer
 
     def get_permissions(self):

@@ -39,6 +39,24 @@ class RegistrationTests(TestCase):
         self.assertEqual(user.profile.rol, 'cliente')
 
 
+class LoginRoleRedirectTests(TestCase):
+    def test_operator_login_redirects_to_custom_panel(self):
+        operator = User.objects.create_user(
+            username='operator_login',
+            password='Operador!2026Seguro',
+            is_staff=True,
+        )
+        operator.profile.rol = 'operador'
+        operator.profile.save(update_fields=['rol'])
+
+        response = self.client.post(reverse('users:login'), {
+            'username': operator.username,
+            'password': 'Operador!2026Seguro',
+        })
+
+        self.assertRedirects(response, reverse('backoffice:dashboard'))
+
+
 class GeneratedClientDataTests(TestCase):
     def clientes_generados(self):
         return User.objects.filter(

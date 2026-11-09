@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .admin-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+    .admin-nav { display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; }
+    .admin-nav a { padding:8px 12px; border:1px solid #494e56; color:#f4f1eb; text-decoration:none; border-radius:3px; }
+    .admin-nav a:hover, .admin-nav a[aria-current="page"] { border-color:#ed1c24; background:#571a1d; }
+    .admin-form { display:grid; gap:14px; max-width:760px; }
+    .admin-form label { margin:0; }
+    .admin-form input:not([type=checkbox]), .admin-form select, .admin-form textarea,
+    .admin-filter input:not([type=checkbox]), .admin-filter select { width:100%; padding:10px; border:1px solid #555b64; border-radius:3px; background:#25282e; color:#fff; }
+    .admin-form textarea { min-height:110px; resize:vertical; }
+    .admin-form input[type=checkbox] { margin-right:8px; accent-color:#ed1c24; }
+    .admin-actions { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+    .admin-filter { display:flex; flex-wrap:wrap; gap:10px; align-items:end; margin:12px 0 18px; }
+    .admin-filter label { flex:1 1 170px; }
+    .report-block { scroll-margin-top:16px; }
+    .error-list { color:#ffb9bc; margin:0 0 16px 20px; }
+    .quiet { color:#a7adb7; }
+    @media (max-width:700px) { .admin-filter { align-items:stretch; flex-direction:column; } }
+</style>
+<section class="card">
+    <div class="admin-heading"><h1>Administración MusicPro</h1><span class="quiet">Sesión: {{ user.username }}</span></div>
+    <nav class="admin-nav" aria-label="Administración">
+        <a href="{% url 'backoffice:dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %}>Resumen</a>
+        <a href="{% url 'backoffice:products' %}" {% if request.resolver_match.url_name == 'products' or request.resolver_match.url_name == 'product_create' or request.resolver_match.url_name == 'product_edit' or request.resolver_match.url_name == 'product_delete' %}aria-current="page"{% endif %}>Productos</a>
+        {% if user.is_superuser or user.profile.rol == 'admin' %}
+        <a href="{% url 'backoffice:categories' %}" {% if request.resolver_match.url_name == 'categories' or request.resolver_match.url_name == 'category_create' or request.resolver_match.url_name == 'category_edit' or request.resolver_match.url_name == 'category_delete' %}aria-current="page"{% endif %}>Categorías</a>
+        <a href="{% url 'backoffice:users' %}" {% if request.resolver_match.url_name == 'users' or request.resolver_match.url_name == 'user_create' or request.resolver_match.url_name == 'user_edit' or request.resolver_match.url_name == 'user_toggle_active' %}aria-current="page"{% endif %}>Usuarios</a>
+        {% endif %}
+        <a href="{% url 'backoffice:orders' %}" {% if request.resolver_match.url_name == 'orders' or request.resolver_match.url_name == 'order_status' or request.resolver_match.url_name == 'order_create' or request.resolver_match.url_name == 'order_edit' or request.resolver_match.url_name == 'order_delete' %}aria-current="page"{% endif %}>Ventas</a>
+        <a href="{% url 'backoffice:reports' %}" {% if request.resolver_match.url_name == 'reports' %}aria-current="page"{% endif %}>Reportes ORM</a>
+    </nav>
+</section>
+{% block admin_content %}{% endblock %}
+{% endblock %}

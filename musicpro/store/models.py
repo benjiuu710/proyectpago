@@ -12,6 +12,11 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    ESTADO_CHOICES = [
+        ('activo', 'Activo'),
+        ('inactivo', 'Inactivo'),
+    ]
+
     nombre = models.CharField('Nombre', max_length=120)
     codigo = models.CharField('Código de producto', max_length=30, unique=True)
     categoria = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='products')
@@ -19,6 +24,7 @@ class Product(models.Model):
     descripcion = models.TextField('Descripción', blank=True, default='')
     imagen = models.ImageField('Imagen', upload_to='products/', null=True, blank=True)
     stock = models.PositiveIntegerField('Stock disponible', default=0)
+    estado = models.CharField('Estado', max_length=10, choices=ESTADO_CHOICES, default='activo', db_index=True)
     ubicacion = models.CharField('Ubicación', max_length=80, blank=True, default='')
 
     def __str__(self):

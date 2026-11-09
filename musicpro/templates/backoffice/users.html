@@ -1,0 +1,24 @@
+{% extends 'backoffice/base.html' %}
+{% block title %}Usuarios · Gestión{% endblock %}
+{% block admin_content %}
+<section class="card">
+    <div class="admin-heading"><h2>Usuarios</h2><a class="btn" href="{% url 'backoffice:user_create' %}">Nuevo usuario</a></div>
+    <form method="get" class="admin-filter">
+        <label>Buscar por usuario, nombre, correo o RUT<input type="text" name="q" value="{{ search }}"></label>
+        <button class="btn" type="submit">Buscar</button>
+        {% if search %}<a href="{% url 'backoffice:users' %}">Limpiar</a>{% endif %}
+    </form>
+    <table>
+        <thead><tr><th>Usuario</th><th>Nombre</th><th>Correo</th><th>RUT</th><th>Rol</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <tbody>
+        {% for account in users %}
+            <tr><td>{{ account.username }}</td><td>{{ account.get_full_name|default:'-' }}</td><td>{{ account.email|default:'-' }}</td><td>{{ account.profile.rut|default:'-' }}</td><td>{{ account.profile.get_rol_display }}</td><td>{% if account.is_active %}Activo{% else %}Desactivado{% endif %}</td>
+                <td><div class="admin-actions"><a href="{% url 'backoffice:user_edit' account.pk %}">Editar</a>
+                    {% if account.pk != user.pk %}<form method="post" action="{% url 'backoffice:user_toggle_active' account.pk %}">{% csrf_token %}<button class="btn grey" type="submit">{% if account.is_active %}Desactivar{% else %}Activar{% endif %}</button></form>{% endif %}
+                </div></td>
+            </tr>
+        {% empty %}<tr><td colspan="7">No hay usuarios para mostrar.</td></tr>{% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

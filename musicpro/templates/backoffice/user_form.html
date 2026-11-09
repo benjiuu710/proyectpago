@@ -1,0 +1,20 @@
+{% extends 'backoffice/base.html' %}
+{% block title %}{% if target_user %}Editar{% else %}Nuevo{% endif %} usuario · Gestión{% endblock %}
+{% block admin_content %}
+<section class="card">
+    <h2>{% if target_user %}Editar usuario{% else %}Crear usuario{% endif %}</h2>
+    {% if errors %}<ul class="error-list">{% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+    <form method="post" class="admin-form">
+        {% csrf_token %}
+        <label>Nombre de usuario<input type="text" name="username" value="{{ form_data.username }}" required></label>
+        <label>Correo electrónico<input type="email" name="email" value="{{ form_data.email }}"></label>
+        <div class="grid2"><label>Nombre<input type="text" name="first_name" value="{{ form_data.first_name }}"></label><label>Apellido<input type="text" name="last_name" value="{{ form_data.last_name }}"></label></div>
+        <div class="grid2"><label>RUT<input type="text" name="rut" value="{{ form_data.rut }}"></label><label>Teléfono<input type="tel" name="telefono" value="{{ form_data.telefono }}"></label></div>
+        <label>Rol de perfil<select name="rol">{% for value,label in roles %}<option value="{{ value }}" {% if form_data.rol == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+        <label>Contraseña{% if target_user %} (dejar vacía para no cambiarla){% endif %}<input type="password" name="password" autocomplete="new-password" {% if not target_user %}required{% endif %}></label>
+        <label><input type="checkbox" name="is_staff" {% if form_data.is_staff %}checked{% endif %}>Acceso al panel administrativo</label>
+        <label><input type="checkbox" name="is_active" {% if form_data.is_active %}checked{% endif %}>Cuenta activa</label>
+        <div class="admin-actions"><button class="btn" type="submit">Guardar</button><a href="{% url 'backoffice:users' %}">Cancelar</a></div>
+    </form>
+</section>
+{% endblock %}

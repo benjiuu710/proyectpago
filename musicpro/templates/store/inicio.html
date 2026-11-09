@@ -47,7 +47,7 @@
         <p style="color:#c4c8cf; line-height:1.5; margin-top:12px;">{{ p.descripcion|default:'Equipo profesional listo para tu próximo proyecto.' }}</p>
         <p style="font-size:24px; color:#ff9b9f; margin:18px 0;">${{ p.precio }} <small style="font-size:13px; color:#a7adb7;">CLP</small></p>
         {% if user.is_authenticated %}
-            <a class="btn" href="{% url 'store:agregar' p.pk %}">Agregar al carrito</a>
+            <form method="post" action="{% url 'store:agregar' p.pk %}">{% csrf_token %}<button class="btn" type="submit">Agregar al carrito</button></form>
         {% else %}
             <a class="btn grey" href="{% url 'users:login' %}">Inicia sesión para comprar</a>
         {% endif %}

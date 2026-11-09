@@ -1,0 +1,21 @@
+{% extends 'backoffice/base.html' %}
+{% block title %}{% if order %}Editar{% else %}Registrar{% endif %} venta · Gestión{% endblock %}
+{% block admin_content %}
+<section class="card">
+    <h2>{% if order %}Editar venta pendiente #{{ order.pk }}{% else %}Registrar venta pendiente{% endif %}</h2>
+    <p class="quiet">Las ventas creadas desde el panel quedan pendientes de pago y no descuentan stock.</p>
+    {% if errors %}<ul class="error-list">{% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+    <form method="post" class="admin-form">
+        {% csrf_token %}
+        <label>Cliente<select name="cliente" required><option value="">Selecciona un cliente activo</option>{% for customer in customers %}<option value="{{ customer.pk }}" {% if customer_id|stringformat:'s' == customer.pk|stringformat:'s' %}selected{% endif %}>{{ customer.username }} · {{ customer.get_full_name|default:customer.email }}</option>{% endfor %}</select></label>
+        <h3>Productos</h3>
+        {% for row in rows %}
+        <div class="grid2">
+            <label>Producto<select name="productos"><option value="">Sin producto</option>{% for product in products %}<option value="{{ product.pk }}" {% if row.product_id|stringformat:'s' == product.pk|stringformat:'s' %}selected{% endif %}>{{ product.nombre }} · stock {{ product.stock }} · ${{ product.precio|floatformat:0 }}</option>{% endfor %}</select></label>
+            <label>Cantidad<input type="number" name="cantidades" min="1" step="1" value="{{ row.quantity }}"></label>
+        </div>
+        {% endfor %}
+        <div class="admin-actions"><button class="btn" type="submit">Guardar venta pendiente</button><a href="{% url 'backoffice:orders' %}">Cancelar</a></div>
+    </form>
+</section>
+{% endblock %}

@@ -32,6 +32,8 @@ flowchart TD
 
 - `/` muestra el catálogo y la bienvenida.
 - `/usuarios/login/` y `/usuarios/registro/` gestionan el acceso.
+- `/gestion/` abre el panel administrativo propio para perfiles Administrador y Operador.
+- `/gestion/reportes/` presenta las consultas ORM del caso Tienda.
 - `/carrito/` permite revisar la selección.
 - `/checkout/` valida BPass, stock, puntos, saldo y antifraude.
 - `/pagos/comprobantes/` muestra los comprobantes.

@@ -13,9 +13,9 @@
     </p>
     <a class="btn grey" href="{% url 'payments:recargar' %}">Recargar saldo</a>
     {% if wallet.estado == 'activa' %}
-        <a class="btn btn-red" href="{% url 'payments:bloquear' %}">Bloquear tarjeta</a>
+        <form method="post" action="{% url 'payments:bloquear' %}">{% csrf_token %}<input type="hidden" name="accion" value="bloquear"><button class="btn btn-red" type="submit">Bloquear tarjeta</button></form>
     {% else %}
-        <a class="btn green" href="{% url 'payments:bloquear' %}?accion=habilitar">Habilitar tarjeta</a>
+        <form method="post" action="{% url 'payments:bloquear' %}">{% csrf_token %}<input type="hidden" name="accion" value="habilitar"><button class="btn green" type="submit">Habilitar tarjeta</button></form>
     {% endif %}
 </div>
 

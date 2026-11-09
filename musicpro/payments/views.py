@@ -3,6 +3,7 @@ from decimal import Decimal, InvalidOperation
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.views.decorators.http import require_POST
 from .models import BeatPayWallet, Voucher
 from .services import obtener_wallet, recargar_saldo
 
@@ -41,13 +42,16 @@ def comprobantes(request):
 
 
 @login_required
+@require_POST
 def bloquear_tarjeta(request):
-    wallet, _ = BeatPayWallet.objects.get_or_create(user=request.user)
-    accion = request.GET.get('accion', 'bloquear')
+    wallet = obtener_wallet(request.user)
+    accion = request.POST.get('accion', 'bloquear')
     if accion == 'habilitar':
         wallet.habilitar()
         messages.success(request, 'Tarjeta habilitada nuevamente.')
-    else:
+    elif accion == 'bloquear':
         wallet.bloquear()
         messages.success(request, 'Tarjeta bloqueada por anti-robo.')
+    else:
+        messages.error(request, 'Acción de tarjeta no válida.')
     return redirect('payments:tarjeta')

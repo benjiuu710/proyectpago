@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.exceptions import ValidationError
@@ -66,12 +67,17 @@ def iniciar_sesion(request):
             login(request, user)
             destino = request.GET.get('next') or request.POST.get('next')
             if not destino:
-                destino = 'admin:index' if user.is_staff else 'store:inicio'
+                profile = getattr(user, 'profile', None)
+                puede_abrir_panel = user.is_superuser or (
+                    user.is_staff and profile and profile.rol in ('admin', 'operador')
+                )
+                destino = 'backoffice:dashboard' if puede_abrir_panel else 'store:inicio'
             return redirect(destino)
         messages.error(request, 'RUT, usuario o contraseña incorrectos.')
     return render(request, 'users/login.html')
 
 
+@require_POST
 def cerrar_sesion(request):
     logout(request)
     return redirect('users:login')

@@ -1,0 +1,22 @@
+{% extends 'backoffice/base.html' %}
+{% block title %}Gestión · MusicPro{% endblock %}
+{% block admin_content %}
+<section class="grid2">
+    <article class="card"><h3>Productos</h3><p>{{ product_count }}</p></article>
+    <article class="card"><h3>Clientes</h3><p>{{ customer_count }}</p></article>
+    <article class="card"><h3>Ventas</h3><p>{{ order_count }}</p></article>
+</section>
+<section class="card">
+    <div class="admin-heading"><h2>Ventas recientes</h2><a href="{% url 'backoffice:orders' %}">Ver todas</a></div>
+    <table>
+        <thead><tr><th>N.º</th><th>Cliente</th><th>Fecha</th><th>Estado</th><th>Total</th></tr></thead>
+        <tbody>
+        {% for order in recent_orders %}
+            <tr><td>{{ order.pk }}</td><td>{{ order.user.username }}</td><td>{{ order.creada|date:'d/m/Y H:i' }}</td><td>{{ order.get_estado_display }}</td><td>${{ order.total|floatformat:0 }}</td></tr>
+        {% empty %}
+            <tr><td colspan="5">Todavía no hay ventas.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}
